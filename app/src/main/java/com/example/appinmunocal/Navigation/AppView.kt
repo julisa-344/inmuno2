@@ -9,7 +9,9 @@ open class AppView (val route: String){
     object cart: AppView("cart")
     object detailSub: AppView("detail_sub")
     object myShops: AppView("myShops")
-    object detailProduct: AppView("detailProduct")
-    object actualSubView: AppView("actualSubView")
-    object promosView: AppView("promosView")
+    object Products: AppView("products")
+    object actualSubView: AppView("actualSub")
+    object promosView: AppView("promos")
+    object homeView: AppView("home")
+    object detailproducts: AppView("detail_products")
 }

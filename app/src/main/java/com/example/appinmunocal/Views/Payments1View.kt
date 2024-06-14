@@ -263,7 +263,7 @@ fun barraInferior(navController: NavHostController) {
                 .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ){
-                IconButton(onClick = { navController.navigate("menu") }) {
+                IconButton(onClick = { navController.navigate("home") }) {
                     Icon(imageVector = Icons.Default.Home, contentDescription = null,
                         modifier = Modifier
                             .size(35.dp)

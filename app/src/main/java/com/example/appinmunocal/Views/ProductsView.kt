@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -28,10 +29,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,72 +47,112 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.appinmunocal.R
+
+@Composable
+fun ProductsView(navController: NavHostController) {
+    val cantidadEnCarrito = remember { mutableStateOf(0) }
+    val onRegresarClicked = { /* TODO */ }
+    val onCarritoClicked = { /* TODO */ }
+
+    Scaffold (
+        topBar = { barraSuperiorProduct(navController, cantidadEnCarrito.value, onRegresarClicked, onCarritoClicked)},
+        content = {reservado ->
+            Surface(modifier = Modifier.padding(reservado)){
+                val categorias = listOf(
+                    Categoria("Salud", R.drawable.salud),
+                    Categoria("Nutricion", R.drawable.nutricion),
+                    Categoria("Deporte", R.drawable.deporte),
+                    Categoria("Mental", R.drawable.mental),
+                    Categoria("Suplemento", R.drawable.suplementos),
+                )
+                val productos = listOf(
+                    Producto("Immunocal", R.drawable.immunocal_platinum),
+                    Producto("Knutric +", R.drawable.omega1),
+                    Producto("Immunocal", R.drawable.inmunox2),
+                    Producto("Knutric +", R.drawable.knutric1)
+                )
+
+                ProductsViewContent(
+                    categorias = categorias,
+                    productos = productos,
+                    navController = navController,
+                    onAgregarAlCarrito = { producto ->
+                        cantidadEnCarrito.value++
+                    })
+            }
+        },
+        bottomBar = { barraInferior(navController)}
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductsView(
+fun barraSuperiorProduct(navController: NavHostController, cantidadEnCarrito: Int, onRegresarClicked: () -> Unit, onCarritoClicked: () -> Unit) {
+    TopAppBar(
+        title = { Text("") },
+        navigationIcon = {
+            IconButton(onClick = onRegresarClicked,
+                modifier = Modifier.size(30.dp)
+            ) {
+                Icon(
+                    Icons.Default.KeyboardArrowLeft,
+                    contentDescription = "Regresar",
+                    modifier = Modifier.size(40.dp))
+            }
+        },
+        actions = {
+            val textoBusqueda = remember { mutableStateOf("") }
+
+            val customTextFieldStyles = TextFieldDefaults.textFieldColors(
+                containerColor = Color.Transparent,
+                disabledLabelColor = Color.Gray,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+            )
+
+            // Modifier para aplicar a nuestro TextField
+            val customModifier = Modifier
+                .padding(8.dp)
+                .background(
+                    colorResource(id = R.color.neutral_200),
+                    RoundedCornerShape(10.dp)
+                )
+
+            TextField(
+                value = textoBusqueda.value,
+                onValueChange = { nuevoValor -> textoBusqueda.value = nuevoValor },
+                modifier = customModifier,
+                colors = customTextFieldStyles,
+                leadingIcon = { Icon(Icons.Filled.Search, tint = colorResource(id = R.color.neutral_500) ,contentDescription = "Buscar") },
+                placeholder = { Text("Buscar...", color = colorResource(id = R.color.neutral_500)) },
+                singleLine = true
+            )
+            Badge(containerColor = Color.Transparent, modifier = Modifier.size(30.dp)) {
+                IconButton(onClick = onCarritoClicked) {
+                    Icon(
+                        Icons.Default.ShoppingCart,
+                        contentDescription = "Carrito")
+                    Text("$cantidadEnCarrito")
+                }
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProductsViewContent(
     categorias: List<Categoria>,
     productos: List<Producto>,
-    cantidadEnCarrito: Int,
-    onRegresarClicked: () -> Unit,
-    onCarritoClicked: () -> Unit,
+    navController: NavHostController,
     onAgregarAlCarrito: (Producto) -> Unit
 ) {
     Box(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)){
         Column {
-            TopAppBar(
-                title = { Text("") },
-                navigationIcon = {
-                    IconButton(onClick = { onRegresarClicked() },  modifier = Modifier.size(30.dp).align(
-                        Alignment.Start)) {
-                        Icon(
-                            Icons.Default.KeyboardArrowLeft,
-                            contentDescription = "Regresar",
-                            modifier = Modifier.size(40.dp))
-                    }
-                },
-                actions = {
-                    val textoBusqueda = remember { mutableStateOf("") }
-
-                    val customTextFieldStyles = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
-                        disabledLabelColor = Color.Gray,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                    )
-
-                    // Modifier para aplicar a nuestro TextField
-                    val customModifier = Modifier
-                        .padding(8.dp)
-                        .background(
-                            colorResource(id = R.color.neutral_200),
-                            RoundedCornerShape(10.dp)
-                        )
-
-
-                    TextField(
-                        value = textoBusqueda.value,
-                        onValueChange = { nuevoValor -> textoBusqueda.value = nuevoValor },
-                        modifier = customModifier,
-                        colors = customTextFieldStyles,
-                        leadingIcon = { Icon(Icons.Filled.Search, tint = colorResource(id = R.color.neutral_500) ,contentDescription = "Buscar") },
-                        placeholder = { Text("Buscar...", color = colorResource(id = R.color.neutral_500)) },
-                        singleLine = true
-                    )
-                    Badge(containerColor = Color.Transparent, modifier = Modifier.size(30.dp)) {
-                        IconButton(onClick = { onCarritoClicked() }) {
-                            Icon(
-                                Icons.Default.ShoppingCart,
-                                contentDescription = "Carrito")
-                            Text("$cantidadEnCarrito")
-                        }
-                    }
-                }
-            )
-
             Spacer(modifier = Modifier.size(16.dp))
 
             LazyRow(modifier = Modifier.padding(8.dp)) {
@@ -116,14 +160,11 @@ fun ProductsView(
                     CategoriaItem(categorias[index])
                 }
             }
-            ListaProductos(productos, onAgregarAlCarrito)
-            ListaProductos(productos, onAgregarAlCarrito)
+            ListaProductos(productos, navController, onAgregarAlCarrito)
+            ListaProductos(productos, navController, onAgregarAlCarrito)
         }
     }
 }
-
-
-
 
 @Composable
 fun CategoriaItem(categoria: Categoria) {
@@ -147,7 +188,7 @@ fun CategoriaItem(categoria: Categoria) {
 }
 
 @Composable
-fun ListaProductos(productos: List<Producto>, onAgregarAlCarrito: (Producto) -> Unit) {
+fun ListaProductos(productos: List<Producto>, navController: NavHostController, onAgregarAlCarrito: (Producto) -> Unit) {
     val gridState = rememberLazyGridState()
     val columnas = GridCells.Fixed(2)
 
@@ -157,14 +198,14 @@ fun ListaProductos(productos: List<Producto>, onAgregarAlCarrito: (Producto) -> 
         contentPadding = PaddingValues(8.dp),
         content = {
             items(productos.size) { index ->
-                ProductoItem(productos[index], onAgregarAlCarrito)
+                ProductoItem(productos[index], navController, onAgregarAlCarrito)
             }
         }
     )
 }
 
 @Composable
-fun ProductoItem(producto: Producto, onAgregarAlCarrito: (Producto) -> Unit) {
+fun ProductoItem(producto: Producto, navController: NavHostController, onAgregarAlCarrito: (Producto) -> Unit) {
     Card(modifier = Modifier.padding(4.dp)) {
         Box(modifier = Modifier
             .background(color = colorResource(id = R.color.neutral_50), RoundedCornerShape(10.dp))
@@ -202,7 +243,10 @@ fun ProductoItem(producto: Producto, onAgregarAlCarrito: (Producto) -> Unit) {
                 )
                 Spacer(modifier = Modifier.size(10.dp))
                 IconButton(
-                    onClick = { onAgregarAlCarrito(producto) },
+                    onClick = {
+                        onAgregarAlCarrito(producto)
+                        navController.navigate("detail_products")
+                    },
                     modifier = Modifier
                         .border(
                             width = 1.dp,
