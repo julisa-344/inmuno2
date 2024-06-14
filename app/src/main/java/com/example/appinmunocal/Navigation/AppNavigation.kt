@@ -11,14 +11,17 @@ import com.example.appinmunocal.R
 import com.example.appinmunocal.Views.ActualSubView
 import com.example.appinmunocal.Views.CartView
 import com.example.appinmunocal.Views.Categoria
+import com.example.appinmunocal.Views.DetailPerfilView
 import com.example.appinmunocal.Views.DetailProductosView
 import com.example.appinmunocal.Views.Producto
 import com.example.appinmunocal.Views.DetailSubView
 import com.example.appinmunocal.Views.HomeView
+import com.example.appinmunocal.Views.MicuentaView
 import com.example.appinmunocal.Views.MyShops
 import com.example.appinmunocal.Views.ProductsView
 import com.example.appinmunocal.Views.PromosView
 import com.example.appinmunocal.Views.SuscripcionView
+import com.example.appinmunocal.Views.UserProfile
 import com.example.appinmunocal.Views.payments1View
 import com.example.appinmunocal.Views.payments2View
 import com.example.appinmunocal.Views.payments3View
@@ -43,6 +46,10 @@ fun appNavigation(){
         composable(AppView.Products.route) { ProductsView( navController) }
         composable(AppView.promosView.route) { PromosView(navController)  }
 
+        composable(AppView.micuentaView.route) { MicuentaView(navController)  }
+        composable(AppView.detailPerfilView.route) {
+            DetailPerfilView(navController)
+        }
     }
 }
 

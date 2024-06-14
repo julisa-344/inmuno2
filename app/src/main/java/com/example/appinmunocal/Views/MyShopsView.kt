@@ -17,14 +17,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +50,40 @@ import com.example.appinmunocal.R
 
 @Composable
 fun MyShops(navController: NavHostController) {
+    Scaffold (
+        topBar = { barraSuperiorshops(navController)},
+        content = {reservado ->
+            Surface(modifier = Modifier.padding(reservado)){
+                MyShopsContent(navController)
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun barraSuperiorshops(navController: NavHostController) {
+    TopAppBar(
+        modifier = Modifier,
+        title = { Text("Mis ordenes") },
+        navigationIcon = {
+            IconButton(onClick = {navController.navigate("micuenta")}) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "retorno", tint = Color.White)
+            }
+        },
+        actions = {
+
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    )
+}
+
+
+@Composable
+fun MyShopsContent(navController: NavHostController) {
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabTitles = listOf("Recibidos", "Cancelados")
 
@@ -52,31 +94,6 @@ fun MyShops(navController: NavHostController) {
     )
     {
         Column {
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .background(colorResource(R.color.neutral_50))
-                .padding(top = 16.dp)
-
-
-            ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowLeft,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clickable {
-                            navController.navigate("miCuenta")
-                        }
-                        .size(30.dp)
-                        .padding(0.dp),
-                    tint = colorResource(R.color.primary_600),
-
-                    )
-                Text(
-                    text = "Mis ordenes",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleMedium.copy(color = colorResource(R.color.primary_600))
-                )
             }
             TabRow(
                 selectedTabIndex = selectedTabIndex,
@@ -99,7 +116,7 @@ fun MyShops(navController: NavHostController) {
             }
         }
     }
-}
+
 
 @Composable
 fun ItemProduct(

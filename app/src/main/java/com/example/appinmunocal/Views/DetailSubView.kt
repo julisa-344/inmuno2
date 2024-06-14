@@ -128,7 +128,7 @@ fun DetailSubViewContent(navController: NavHostController){
                     text = { Text("Your monthly meal plan subscription has been set successfully.") },
                     confirmButton = {
                         Button(
-                            onClick = { navController.navigate("actualSubView") },
+                            onClick = { navController.navigate("home") },
                             colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.primary_600)),
                             modifier = Modifier
                                 .width(200.dp)

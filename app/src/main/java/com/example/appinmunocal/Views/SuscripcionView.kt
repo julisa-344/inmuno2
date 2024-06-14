@@ -139,7 +139,7 @@ fun barraSuperiorSub(navController: NavHostController) {
         modifier = Modifier,
         title = { Text("Elige el plan ideal para ti") },
         navigationIcon = {
-            IconButton(onClick = {navController.navigate("vista1")}) {
+            IconButton(onClick = {navController.navigate("micuenta")}) {
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "retorno", tint = Color.White)
             }
         },

@@ -60,7 +60,7 @@ fun barraSuperiorcart(navController: NavHostController) {
         modifier = Modifier,
         title = { Text("Carrito de compras") },
         navigationIcon = {
-            IconButton(onClick = {navController.navigate("payments2")}) {
+            IconButton(onClick = {navController.navigate("products")}) {
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "retorno", tint = Color.White)
             }
         },

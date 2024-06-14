@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -61,7 +62,8 @@ fun HomeView(navController: NavHostController) {
             Surface(modifier = Modifier.padding(reservado)){
                 HomeViewContent(navController)
             }
-        }
+        },
+        bottomBar = { barraInferior(navController)}
     )
 }
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,7 +91,8 @@ fun HomeViewContent(navController: NavHostController){
     var text = ""
 
     Box(contentAlignment = Alignment.TopCenter,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .clickable {
                 navController.navigate("products")
             }){
@@ -105,26 +108,18 @@ fun HomeViewContent(navController: NavHostController){
                     modifier = Modifier.size(50.dp)
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(text = "Productos",
-                    style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold),
-                    color = Color.White)
+                TextField(
+                    value = "",
+                    onValueChange = { },
+                    leadingIcon = { Icon(Icons.Filled.Search, tint = colorResource(id = R.color.neutral_500) ,contentDescription = "Buscar") },
+                    placeholder = { Text("Buscar...", color = colorResource(id = R.color.neutral_500)) },
+                    singleLine = true
+                )
             }
-            Row(verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(16.dp)) {
-                TextField(value = text, onValueChange = { newText -> text = newText},
-                    modifier = Modifier
-                        .height(10.dp)
-                        .background(Color.White, shape = RoundedCornerShape(30)),
-                    label = { Text("Ingrese su texto") })
-                Spacer(modifier = Modifier.width(10.dp))
-                Icon(imageVector = Icons.Default.Notifications, contentDescription = "campana",
-                    modifier = Modifier.size(30.dp), tint = Color.White)
-                Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "cara",
-                    modifier = Modifier.size(30.dp), tint = Color.White)
-            }
+       Spacer(modifier = Modifier.height(15.dp))
             Row(verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .background(color = Color(0xFFffca99), shape = RoundedCornerShape(16.dp))
+                    .background(colorResource(id = R.color.yellow), shape = RoundedCornerShape(16.dp))
                     .padding(15.dp)
             ) {
                 Column(modifier = Modifier) {

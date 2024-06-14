@@ -281,7 +281,7 @@ fun barraInferior(navController: NavHostController) {
                             .size(35.dp)
                     )
                 }
-                IconButton(onClick = { navController.navigate("vista2") }) {
+                IconButton(onClick = { navController.navigate("micuenta") }) {
                     Icon(imageVector = Icons.Default.AccountCircle, contentDescription = null,
                         modifier = Modifier
                             .size(35.dp)

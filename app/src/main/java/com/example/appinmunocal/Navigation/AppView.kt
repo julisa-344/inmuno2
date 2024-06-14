@@ -11,7 +11,9 @@ open class AppView (val route: String){
     object myShops: AppView("myShops")
     object Products: AppView("products")
     object actualSubView: AppView("actualSub")
-    object promosView: AppView("promos")
+    object promosView: AppView("cupones")
     object homeView: AppView("home")
     object detailproducts: AppView("detail_products")
+    object micuentaView: AppView("micuenta")
+object detailPerfilView: AppView("detail_perfil")
 }
